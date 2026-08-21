@@ -1,0 +1,35 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # 22.18 is the floor declared in package.json (module.registerHooks);
+        # 24 and 25 guard against the inspector protocol shifting under us.
+        node: ['22.18', '24', '25']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+      - run: npm ci
+      - run: npm test
+
+  bench:
+    # Informational only: CI runners are far too noisy to gate on timings, but a
+    # 200x regression in the hybrid would still be visible in the log.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '25'
+      - run: npm ci
+      - run: npm run bench

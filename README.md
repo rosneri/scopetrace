@@ -100,10 +100,17 @@ the instant the body suspends. (Cost: async functions that reference
 
 ## Three engines
 
+Every number in this section is best-of-5 in a clean process, Node 25 on an
+M-series Mac, from `npm run bench` — reproduce it before trusting it. The
+call-storm workload is a deliberate worst case: nothing but function calls, so
+per-call costs show up at their most brutal. Real code with real work in it sits
+much closer to 1×, and the per-throw costs are hardware-independent enough to
+trust as orders of magnitude rather than exact figures.
+
 | | transform (`scopetrace/register`) | inspector (`scopetrace/inspector`) | **hybrid (`scopetrace/hybrid-register`)** |
 |---|---|---|---|
 | build step | yes (or the loader hook) | none | hints only (or the loader hook) |
-| per-call cost | ~200× on a call storm | none | **none (0.98× measured)** |
+| per-call cost | ~190× on a call storm | none | **none (0.99× measured)** |
 | per-throw cost | ~free | ~280 µs (isolate pause) | ~280 µs, rate-limited |
 | sees pruned closure vars | yes | **no** | **yes** |
 | nested block scopes | no | yes | yes |
@@ -126,7 +133,8 @@ function validate(order) {
 }
 ```
 
-Measured, 30M calls: 17.8 ms without the hint, 17.4 ms with it. The branch never
+Measured, 3M calls through a 3-deep chain: 17.2 ms without the hint, 17.1 ms
+with it — the difference is inside run-to-run noise. The branch never
 runs, so it costs nothing at runtime; it only changes what V8 decided to keep.
 That buys the inspector exactly the visibility the wrapping transform had, at
 none of its per-call price:
