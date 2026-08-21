@@ -1,8 +1,35 @@
 {
   "name": "scopetrace",
   "version": "0.0.1",
-  "type": "module",
   "description": "Auto-instrument Node.js: live call tree + full scope-chain capture on every throw, caught or not.",
+  "license": "MIT",
+  "author": "rosneri",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rosneri/scopetrace.git"
+  },
+  "bugs": {
+    "url": "https://github.com/rosneri/scopetrace/issues"
+  },
+  "homepage": "https://github.com/rosneri/scopetrace#readme",
+  "keywords": [
+    "debugging",
+    "instrumentation",
+    "stack-trace",
+    "closure",
+    "scope",
+    "v8",
+    "inspector",
+    "babel",
+    "observability",
+    "error-tracking"
+  ],
+  "files": [
+    "src",
+    "README.md",
+    "LICENSE"
+  ],
+  "type": "module",
   "exports": {
     ".": "./src/index.js",
     "./runtime": "./src/runtime.js",
