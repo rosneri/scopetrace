@@ -1,0 +1,29 @@
+{
+  "name": "scopetrace",
+  "version": "0.0.1",
+  "type": "module",
+  "description": "Auto-instrument Node.js: live call tree + full scope-chain capture on every throw, caught or not.",
+  "exports": {
+    ".": "./src/index.js",
+    "./runtime": "./src/runtime.js",
+    "./babel": "./src/babel-plugin.js",
+    "./unplugin": "./src/unplugin.js",
+    "./inspector": "./src/inspector.js",
+    "./register": "./src/register.js",
+    "./retain": "./src/retain-plugin.js",
+    "./hybrid": "./src/hybrid.js",
+    "./hybrid-register": "./src/register-hybrid.js"
+  },
+  "engines": {
+    "node": ">=22.18"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.25.0",
+    "unplugin": "^2.1.0"
+  },
+  "scripts": {
+    "test": "node --test \"test/*.test.js\"",
+    "bench": "node bench/run.js",
+    "bench:throws": "node --import ./src/register-hybrid.js bench/throws.js"
+  }
+}
